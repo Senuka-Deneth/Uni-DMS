@@ -102,6 +102,9 @@ include 'includes/header.php';
                         <p>Launch with confidence</p>
                     </li>
                 </ul>
+                <div class="card-links" style="margin-top: 1.5rem;">
+                    <a class="btn btn-secondary" href="about.php">Our approach →</a>
+                </div>
             </article>
             <article class="bento-card bento-half bento-card--stats reveal-on-scroll">
                 <p class="eyebrow">Sri Lanka stats</p>
@@ -116,6 +119,9 @@ include 'includes/header.php';
                         <p>exclusive workshops</p>
                     </div>
                 </div>
+                <div class="card-links" style="margin-top: 1.5rem; position: relative; z-index: 2;">
+                    <a class="btn btn-secondary" href="universities.php">See all universities →</a>
+                </div>
                 <div class="map-decor" aria-hidden="true"></div>
             </article>
         </div>
@@ -129,16 +135,19 @@ include 'includes/header.php';
                 <div class="feature-icon" aria-hidden="true"><i class="fa-solid fa-waveform-path"></i></div>
                 <h3>Guided narratives</h3>
                 <p>Every story, ritual, and campus detail is narrated with precision so you feel confident from the first scroll.</p>
+                <div style="margin-top: 1rem;"><a class="btn btn-ghost" href="about.php">Read our story →</a></div>
             </article>
             <article class="feature-card reveal-on-scroll">
                 <div class="feature-icon" aria-hidden="true"><i class="fa-solid fa-atom"></i></div>
                 <h3>Z-score resonance</h3>
                 <p>Dedicated algorithms pair your score with culture-first outcomes — no guesswork, just calm certainty.</p>
+                <div style="margin-top: 1rem;"><a class="btn btn-ghost" href="finder.php">Try finder →</a></div>
             </article>
             <article class="feature-card reveal-on-scroll">
                 <div class="feature-icon" aria-hidden="true"><i class="fa-solid fa-globe"></i></div>
                 <h3>Future-ready fits</h3>
                 <p>We showcase Sri Lanka’s brightest programs with stories of labs, studios, and traditions shaping tomorrow.</p>
+                <div style="margin-top: 1rem;"><a class="btn btn-ghost" href="universities.php">View universities →</a></div>
             </article>
         </div>
     </div>

@@ -24,18 +24,18 @@ foreach ($queries as $key => $sql) {
     <h1>Admin Dashboard</h1>
     <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Overview of the Uni-DMS directory.</p>
     <div class="stats-grid">
-        <div class="stats-card">
+        <a href="universities.php" class="stats-card" style="text-decoration:none; color:inherit;">
             <span><?php echo $stats['universities']; ?></span>
             <p>Total Universities</p>
-        </div>
-        <div class="stats-card">
+        </a>
+        <a href="degrees.php" class="stats-card" style="text-decoration:none; color:inherit;">
             <span><?php echo $stats['degrees']; ?></span>
             <p>Total Degrees</p>
-        </div>
-        <div class="stats-card">
+        </a>
+        <a href="activities.php" class="stats-card" style="text-decoration:none; color:inherit;">
             <span><?php echo $stats['activities']; ?></span>
             <p>Extracurricular Programs</p>
-        </div>
+        </a>
     </div>
 </div>
 <?php include __DIR__ . '/includes/footer.php'; ?>

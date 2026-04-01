@@ -36,8 +36,10 @@ $currentScript = basename($_SERVER['PHP_SELF']);
 <div class="site-shell">
     <header class="floating-navbar">
         <div class="floating-navbar__brand">
-            <span class="floating-navbar__brand-mark" aria-hidden="true"></span>
-            <span>Uni-DMS</span>
+            <a href="index.php" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+                <span class="floating-navbar__brand-mark" aria-hidden="true"></span>
+                <span>Uni-DMS</span>
+            </a>
         </div>
         <nav>
             <div class="nav-links" role="menubar">
@@ -48,6 +50,7 @@ $currentScript = basename($_SERVER['PHP_SELF']);
         </nav>
         <div class="nav-actions">
             <a class="btn btn-primary" href="finder.php">Find My Degree</a>
+            <a class="btn btn-secondary" style="margin-right: 1rem;" href="login.php">Sign In</a>
             <button class="nav-toggle" type="button" aria-controls="navDrawer" aria-expanded="false" aria-label="Open navigation menu">
                 <span></span>
                 <span></span>
