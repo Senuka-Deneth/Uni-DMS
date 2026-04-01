@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
 </head>
 <body>
 <header>
@@ -21,6 +23,7 @@
                 <li><a href="finder.php">Z-Score Finder</a></li>
                 <li><a href="gallery.php">Gallery</a></li>
                 <li><a href="about.php">About</a></li>
+                <li><button id="theme-toggle" class="btn-theme" aria-label="Toggle Dark Mode">🌙</button></li>
             </ul>
         </div>
     </nav>
