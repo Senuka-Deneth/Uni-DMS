@@ -1,17 +1,25 @@
 <?php
-// db.php - Database connection using MySQLi
-// Update these variables with your database credentials
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$dbname = 'uni_dms';
+// includes/db.php
+require_once __DIR__ . '/config.php';
 
-// Create connection
-$conn = new mysqli($host, $user, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die('Connection failed: ' . $conn->connect_error);
+$conn = mysqli_init();
+if (!$conn) {
+    error_log('[Uni-DMS] mysqli_init failed');
+    http_response_code(500);
+    die('A database error occurred. Please try again later.');
 }
-// Use $conn in your queries
-?>
+
+// Local XAMPP uses localhost and an empty password, so we rely on the constants loaded via config.php
+$db_host = DB_HOST;
+$db_user = DB_USER;
+$db_pass = DB_PASSWORD;
+$db_name = DB_NAME;
+$db_port = is_numeric(DB_PORT) ? (int) DB_PORT : 3306;
+
+if (!mysqli_real_connect($conn, $db_host, $db_user, $db_pass, $db_name, $db_port)) {
+    error_log('[Uni-DMS] DB connection failed: ' . mysqli_connect_error());
+    http_response_code(500);
+    die('Unable to connect to the database. Please try again later.');
+}
+
+mysqli_set_charset($conn, 'utf8mb4');
