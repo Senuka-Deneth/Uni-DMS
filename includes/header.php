@@ -69,6 +69,23 @@ $currentScript = basename($_SERVER['PHP_SELF']);
                         <a class="drawer-link" href="<?php echo $file; ?>"><?php echo $label; ?></a>
                     </li>
                 <?php endforeach; ?>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.php" class="logo">Uni-DMS</a>
+            <ul class="nav-links">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="universities.php">Universities</a></li>
+                <li><a href="finder.php">Z-Score Finder</a></li>
+                <li><a href="gallery.php">Gallery</a></li>
+                <li><a href="about.php">About</a></li>
+                <li><button id="theme-toggle" class="btn-theme" aria-label="Toggle Dark Mode">🌙</button></li>
             </ul>
             <div class="nav-drawer__cta">
                 <a class="btn btn-primary" href="finder.php">Find My Degree</a>
