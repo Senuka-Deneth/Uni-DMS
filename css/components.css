@@ -11,11 +11,10 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-full);
     padding: 14px 28px;
-    display: grid;
-    grid-template-columns: 200px 1fr 200px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    column-gap: var(--space-4);
+    gap: var(--space-4);
     z-index: 1000;
     box-shadow: var(--shadow-dark-sm);
     animation: slideInNav 400ms var(--ease-default) 200ms both;
@@ -172,8 +171,13 @@ nav {
 }
 
 .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: none;
+    text-decoration: none;
     font-weight: 600;
+    max-width: fit-content;
     border-radius: var(--radius-full);
     padding: clamp(10px, 1.5vw, 12px) clamp(20px, 2.5vw, 28px);
     cursor: pointer;

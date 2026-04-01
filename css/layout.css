@@ -11,7 +11,7 @@ body {
 }
 
 .site-main {
-    padding-top: calc(80px + var(--space-4));
+    /* removed top padding to eliminate white blank space */
 }
 
 .container {
