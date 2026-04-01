@@ -70,7 +70,7 @@ CREATE TABLE degrees (
 CREATE TABLE zscore_cutoffs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     degree_id INT NOT NULL,
-    stream ENUM('Maths','Bio','Commerce','Arts') NOT NULL,
+    stream ENUM('Maths','Bio','Commerce','Arts','Physical Science','Biological Science') NOT NULL,
     cutoff DECIMAL(4,3) NOT NULL,
     year YEAR DEFAULT NULL,
     FOREIGN KEY (degree_id) REFERENCES degrees(id) ON DELETE CASCADE

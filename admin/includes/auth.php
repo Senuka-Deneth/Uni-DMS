@@ -1,8 +1,6 @@
 <?php
 require_once __DIR__ . '/bootstrap.php';
 
-$allowed = ['/admin/login.php'];
-
 if (isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id'])) {
     return;
 }

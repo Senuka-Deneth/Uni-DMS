@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/auth.php';
-$pageTitle = 'Degrees';
+$pageTitle = 'Activities';
 
 function bind_stmt_params($stmt, $types, $values) {
     $bind = array_merge([$types], $values);
@@ -12,14 +12,14 @@ function bind_stmt_params($stmt, $types, $values) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delete') {
-    $degreeId = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
-    if ($degreeId) {
-        $stmt = $conn->prepare('DELETE FROM degrees WHERE id = ?');
-        $stmt->bind_param('i', $degreeId);
+    $activityId = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
+    if ($activityId) {
+        $stmt = $conn->prepare('DELETE FROM extracurricular_activities WHERE id = ?');
+        $stmt->bind_param('i', $activityId);
         if ($stmt->execute()) {
-            set_flash('success', 'Degree removed successfully.');
+            set_flash('success', 'Activity removed.');
         } else {
-            set_flash('error', 'Unable to delete the degree.');
+            set_flash('error', 'Unable to remove the activity.');
         }
         $stmt->close();
     }
@@ -33,15 +33,9 @@ $params = [];
 $types = '';
 
 if (!empty($_GET['university'])) {
-    $filters[] = 'f.university_id = ?';
+    $filters[] = 'ea.university_id = ?';
     $params[] = (int) $_GET['university'];
     $types .= 'i';
-}
-
-if (!empty($_GET['stream'])) {
-    $filters[] = 'd.stream_requirement = ?';
-    $params[] = $_GET['stream'];
-    $types .= 's';
 }
 
 $whereClause = 'WHERE 1=1';
@@ -49,7 +43,7 @@ if ($filters) {
     $whereClause .= ' AND ' . implode(' AND ', $filters);
 }
 
-$countSql = "SELECT COUNT(*) AS total FROM degrees d JOIN departments dep ON d.department_id = dep.id JOIN faculties f ON dep.faculty_id = f.id $whereClause";
+$countSql = "SELECT COUNT(*) AS total FROM extracurricular_activities ea $whereClause";
 $countStmt = $conn->prepare($countSql);
 if ($params) {
     bind_stmt_params($countStmt, $types, $params);
@@ -58,7 +52,7 @@ $countStmt->execute();
 $total = (int) $countStmt->get_result()->fetch_assoc()['total'];
 $countStmt->close();
 
-$dataSql = "SELECT d.*, u.name AS university_name, f.name AS faculty_name, dep.name AS department_name FROM degrees d JOIN departments dep ON d.department_id = dep.id JOIN faculties f ON dep.faculty_id = f.id JOIN universities u ON f.university_id = u.id $whereClause ORDER BY d.created_at DESC LIMIT ?, ?";
+$dataSql = "SELECT ea.*, u.name AS university_name FROM extracurricular_activities ea JOIN universities u ON ea.university_id = u.id $whereClause ORDER BY ea.created_at DESC LIMIT ?, ?";
 $dataStmt = $conn->prepare($dataSql);
 $bindParams = array_merge($params, [$offset, $perPage]);
 $bindTypes = $types . 'ii';
@@ -84,20 +78,14 @@ include __DIR__ . '/includes/header.php';
 ?>
 <div class="admin-panel">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;">
-        <h1>Degrees</h1>
-        <a href="degree_form.php" class="btn">Add Degree</a>
+        <h1>Extracurricular Activities</h1>
+        <a href="activity_form.php" class="btn">Add Activity</a>
     </div>
-    <form method="GET" action="degrees.php" style="margin:1.25rem 0;display:flex;gap:1rem;flex-wrap:wrap;">
+    <form method="GET" action="activities.php" style="margin:1.25rem 0;display:flex;gap:1rem;flex-wrap:wrap;">
         <select name="university">
             <option value="">All universities</option>
-            <?php foreach ($universities as $id => $name): ?>
-                <option value="<?php echo $id; ?>" <?php echo ($_GET['university'] ?? '') == $id ? 'selected' : ''; ?>><?php echo htmlspecialchars($name); ?></option>
-            <?php endforeach; ?>
-        </select>
-        <select name="stream">
-            <option value="">All streams</option>
-            <?php foreach (['Maths', 'Bio', 'Commerce', 'Arts', 'Physical Science', 'Biological Science'] as $streamOption): ?>
-                <option value="<?php echo $streamOption; ?>" <?php echo ($_GET['stream'] ?? '') === $streamOption ? 'selected' : ''; ?>><?php echo $streamOption; ?></option>
+            <?php foreach ($universities as $id => $label): ?>
+                <option value="<?php echo $id; ?>" <?php echo ($_GET['university'] ?? '') == $id ? 'selected' : ''; ?>><?php echo htmlspecialchars($label); ?></option>
             <?php endforeach; ?>
         </select>
         <button type="submit" class="btn" style="padding:0.5rem 1rem;">Filter</button>
@@ -105,10 +93,10 @@ include __DIR__ . '/includes/header.php';
     <table class="admin-table">
         <thead>
             <tr>
-                <th>Degree</th>
-                <th>University / Faculty</th>
-                <th>Stream</th>
-                <th>Min Z-score</th>
+                <th>Activity</th>
+                <th>University</th>
+                <th>Category</th>
+                <th>Available</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -117,25 +105,19 @@ include __DIR__ . '/includes/header.php';
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <tr>
                         <td>
-                            <strong><?php echo htmlspecialchars($row['name']); ?></strong><br>
-                            <small style="color:var(--text-muted);"><?php echo htmlspecialchars($row['degree_type']); ?> · <?php echo htmlspecialchars($row['duration']); ?></small>
+                            <strong><?php echo htmlspecialchars($row['name']); ?></strong>
+                            <p style="color:var(--text-muted); margin-top:0.3rem; font-size:0.85rem;"><?php echo htmlspecialchars($row['description']); ?></p>
                         </td>
                         <td>
                             <?php echo htmlspecialchars($row['university_name']); ?><br>
-                            <small style="color:var(--text-muted);"><?php echo htmlspecialchars($row['faculty_name']); ?> / <?php echo htmlspecialchars($row['department_name']); ?></small>
+                            <small style="color:var(--text-muted);">Added <?php echo date('M Y', strtotime($row['created_at'])); ?></small>
                         </td>
-                        <td>
-                            <?php echo htmlspecialchars($row['stream_requirement']); ?><br>
-                            <small style="color:var(--text-muted);"><?php echo htmlspecialchars($row['medium']); ?></small>
-                        </td>
-                        <td>
-                            <?php echo htmlspecialchars($row['min_zscore'] ?? '—'); ?><br>
-                            <small style="color:var(--text-muted);">Registered <?php echo date('Y', strtotime($row['created_at'])); ?></small>
-                        </td>
+                        <td><?php echo htmlspecialchars($row['category']); ?></td>
+                        <td><?php echo $row['is_available'] ? 'Yes' : 'No'; ?></td>
                         <td>
                             <div class="admin-actions">
-                                <a href="degree_form.php?id=<?php echo $row['id']; ?>" class="btn" style="background: rgba(59, 130, 246, 0.2); border:1px solid rgba(59, 130, 246, 0.8);">Edit</a>
-                                <form method="POST" action="degrees.php" data-confirm="Remove this degree permanently?">
+                                <a href="activity_form.php?id=<?php echo $row['id']; ?>" class="btn" style="background: rgba(59, 130, 246, 0.2); border:1px solid rgba(59, 130, 246, 0.8);">Edit</a>
+                                <form method="POST" action="activities.php" data-confirm="Remove this activity?">
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                     <button type="submit" class="btn" style="background:#ef4444;">Delete</button>
@@ -146,7 +128,7 @@ include __DIR__ . '/includes/header.php';
                 <?php endwhile; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="5">No degrees found.</td>
+                    <td colspan="5">No activities recorded.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
@@ -159,10 +141,7 @@ include __DIR__ . '/includes/header.php';
                 if (!empty($_GET['university'])) {
                     $query['university'] = $_GET['university'];
                 }
-                if (!empty($_GET['stream'])) {
-                    $query['stream'] = $_GET['stream'];
-                }
-                $link = 'degrees.php?' . http_build_query($query);
+                $link = 'activities.php?' . http_build_query($query);
                 ?>
                 <?php if ($i === $page): ?>
                     <span class="current"><?php echo $i; ?></span>

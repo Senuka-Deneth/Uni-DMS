@@ -60,7 +60,7 @@ function upsertCutoff($conn, $degreeId, $stream, $cutoff) {
 }
 
 $degreeId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-    $data = [
+$data = [
     'name' => '',
     'duration' => '',
     'degree_type' => 'BSc',
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($degreeId) {
             $update = $conn->prepare('UPDATE degrees SET name = ?, duration = ?, degree_type = ?, stream_requirement = ?, min_zscore = ?, medium = ?, description = ?, career_paths = ?, department_id = ? WHERE id = ?');
-            $update->bind_param('sssssssii', $name, $duration, $degreeType, $streamRequirement, $minZscore, $medium, $description, $careerPaths, $departmentId, $degreeId);
+            $update->bind_param('ssssssssii', $name, $duration, $degreeType, $streamRequirement, $minZscore, $medium, $description, $careerPaths, $departmentId, $degreeId);
             if ($update->execute()) {
                 upsertCutoff($conn, $degreeId, $streamRequirement, $minZscore ?? 0.0);
                 set_flash('success', 'Degree updated successfully.');
@@ -159,8 +159,9 @@ if ($uniStmt) {
     $uniStmt->free();
 }
 
-include __DIR__ . '/includes/header.php';
 $heading = $degreeId ? 'Edit Degree' : 'Add Degree';
+$pageTitle = $heading;
+include __DIR__ . '/includes/header.php';
 ?>
 <div class="admin-panel">
     <h1><?php echo $heading; ?></h1>
