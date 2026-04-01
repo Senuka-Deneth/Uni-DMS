@@ -61,3 +61,16 @@ CREATE TABLE zscore_cutoffs (
 INSERT INTO universities (name, location, description, image) VALUES
 ('University of Colombo', 'Colombo', 'Leading university in Sri Lanka', 'colombo.jpg'),
 ('University of Peradeniya', 'Peradeniya', 'Beautiful campus with diverse faculties', 'peradeniya.jpg');
+
+-- Site users for login
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    fullname VARCHAR(255),
+    email VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO users (username, password_hash, fullname, email) VALUES
+('student', '$2y$10$Vfvn5My7za1jGVGxa1Vje.3Xks77FNyNGWaSjERHWDQ6A9Rwwss/e%', 'Sample Student', 'student@example.com');
