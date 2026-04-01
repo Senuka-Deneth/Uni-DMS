@@ -121,4 +121,29 @@ include __DIR__ . '/includes/header.php';
     </div>
 </section>
 
+include __DIR__ . '/includes/header.php';
+?>
+<section class="container" style="padding-top: 3rem; padding-bottom: 3rem;">
+    <div class="card" style="max-width: 500px; margin: 0 auto;">
+        <h1>Login</h1>
+        <?php if ($errors): ?>
+            <?php foreach ($errors as $error): ?>
+                <div style="margin-bottom: 0.5rem; padding: 0.6rem 0.9rem; border: 1px solid rgba(239, 68, 68, 0.7); color: #b91c1c; border-radius: 6px;">
+                    <?php echo htmlspecialchars($error); ?>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        <form method="POST" action="login.php" novalidate>
+            <input type="hidden" name="redirect" value="<?php echo htmlspecialchars($redirectTarget, ENT_QUOTES); ?>">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>" required autofocus>
+            <label for="password" style="margin-top: 1rem;">Password</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit" class="btn" style="margin-top: 1.5rem; width: 100%;">Log in</button>
+        </form>
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+            Admin credentials take you to the admin console, other usernames land on the public user space (universities list).
+        </p>
+    </div>
+</section>
 <?php include __DIR__ . '/includes/footer.php'; ?>
